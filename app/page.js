@@ -1,11 +1,11 @@
-import { ProductsPage } from "@/components";
+import { HomePage } from "@/components";
 
 function Home() {
 
 
   return (
     <main className="overflow-hidden">
-      <ProductsPage />
+      <HomePage />
     </main>
   );
 }

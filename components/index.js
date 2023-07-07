@@ -1,5 +1,9 @@
-import ProductsPage from "./HomePage";
+import HomePage from "./HomePage";
+import NavBar from "./NavBar";
+import Footer from "./Footer";
 
 export {
-    ProductsPage
+    HomePage,
+    NavBar,
+    Footer
 }

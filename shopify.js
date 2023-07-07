@@ -13,7 +13,7 @@
 
 export async function fetchShopifyAPI(query, variables = {}) {
     try {
-        const response = await fetch('https://hydrogen-storefront-ec.myshopify.com/api/2021-07/graphql.json', {
+        const response = await fetch('https://hydrogen-storefront-ec.myshopify.com/api/2023-07/graphql.json', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
