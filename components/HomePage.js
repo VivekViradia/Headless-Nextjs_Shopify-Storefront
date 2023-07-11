@@ -11,6 +11,8 @@ function HomePage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    console.log("Products", products)
+
     useEffect(() => {
         async function fetchProducts() {
             try {
@@ -106,7 +108,7 @@ function HomePage() {
 
                         {products.map((product) => (
                             <Link key={product.node.id}
-                                href={`/products/${product.node.handle}`}
+                                href={`/products/${product.node.id}`}
                                 legacyBehavior>
                                 <a className="group">
                                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
@@ -117,16 +119,12 @@ function HomePage() {
                                                         key={index}
                                                         src={img.node.originalSrc}
                                                         alt={img.node.altText}
-                                                        // width={500}
-                                                        // height={500}
                                                         className="h-full w-full object-cover object-center group-hover:opacity-75"
                                                     />
                                                 ))) : (
                                                     <img
                                                         src='no-image-icon-6.png'
                                                         alt='No Product Image Found'
-                                                        // width={500}
-                                                        // height={500}
                                                         className="h-full w-full object-cover object-center group-hover:opacity-75"
                                                     />
                                                 )
@@ -134,8 +132,8 @@ function HomePage() {
                                     </div>
                                     <h3 className="mt-4 text-sm text-gray-700">{product.node.title}</h3>
                                     {
-                                        product.node.variants.edges.map((edge) => (
-                                            <p className="mt-1 text-lg font-medium text-gray-900">{edge.node.priceV2.amount}</p>
+                                        product.node.variants.edges.map((edge, index) => (
+                                            <p key={index} className="mt-1 text-lg font-medium text-gray-900">{edge.node.priceV2.amount}</p>
                                         ))
                                     }
 
