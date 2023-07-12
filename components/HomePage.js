@@ -11,7 +11,6 @@ function HomePage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    console.log("Products", products)
 
     useEffect(() => {
         async function fetchProducts() {
@@ -70,7 +69,7 @@ function HomePage() {
     }
 
     console.log("PRODUCTS", products)
-    console.log("Price", products[3].node.variants.edges[0].node.priceV2.amount)
+    console.log("Product ID", products[3].node.id)
 
     return (
         <div>
@@ -108,7 +107,11 @@ function HomePage() {
 
                         {products.map((product) => (
                             <Link key={product.node.id}
-                                href={`/products/${product.node.id}`}
+                                href={`/products/${product.node.handle}`}
+                                // href={{
+                                //     pathname: `/product/${product.node.handle}`,
+                                //     query: { productId: product.node.handle },
+                                // }}
                                 legacyBehavior>
                                 <a className="group">
                                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">

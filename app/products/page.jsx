@@ -453,14 +453,18 @@
 
 // pages/products/[productId].js
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import ProductDetailsPage from "@/components/ProductDetailsPage";
+import { useEffect } from "react";
 
 function ProductDetails() {
   const router = useRouter();
   console.log("router", router);
-  // const { productId } = router.query;
-  // console.log(productId);
+
+  const query = router.query;
+  console.log("Query", query);
+  // const productHandle = query.productId;
+  // console.log(productHandle);
 
   return (
     <div>
