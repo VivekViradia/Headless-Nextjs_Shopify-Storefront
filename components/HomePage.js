@@ -107,11 +107,12 @@ function HomePage() {
 
                         {products.map((product) => (
                             <Link key={product.node.id}
-                                href={`/products/${product.node.handle}`}
-                                // href={{
-                                //     pathname: `/product/${product.node.handle}`,
-                                //     query: { productId: product.node.handle },
-                                // }}
+                                // href={`/products/${product.node.handle}`}
+                                href={{
+                                    pathname: `/products/${product.node.handle}`,
+                                    query: { productHandle: product.node.handle },
+                                }}
+                                // as={`/products/${product.node.handle}`}
                                 legacyBehavior>
                                 <a className="group">
                                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">

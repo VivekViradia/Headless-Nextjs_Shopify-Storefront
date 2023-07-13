@@ -1,50 +1,64 @@
 
 'use client' //
-import { useEffect, useState } from 'react';
-import { fetchShopifyAPI } from '@/shopify';
 
-function ProductDetailsPage({ productId }) {
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { fetchShopifyAPI } from '@/shopify';
+import { useSearchParams } from 'next/navigation';
+
+function ProductPage() {
+  // const router = useRouter();
+  // const { handle } = router.query;
+
+  const searchParams = useSearchParams();
+  const handle = searchParams.get('productHandle')
+  console.log('productHandle', handle)
+
+
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchProductDetails() {
+    async function fetchProduct() {
       try {
         const gql = String.raw;
         const query = gql`
-        query ($productId: ID!) {
-          product(id: $productId) {
-            id
-            title
-            handle
-            description
-            images(first: 1) {
-              edges {
-                node {
-                  url
-                  altText
+        query($handle: String!) {
+            productByHandle(handle: $handle) {
+              id
+              title
+              handle
+              description
+              images(first: 1) {
+                edges {
+                  node {
+                    originalSrc
+                    altText
+                  }
+                }
+              }
+              variants(first: 1) {
+                edges {
+                  node {
+                    priceV2 {
+                      amount
+                      currencyCode
+                    }
+                  }
                 }
               }
             }
-            variants(first: 1) {
-              edges {
-                node {
-                  price
-                }
-              }
-            }
-            createdAt
           }
-        }
         `;
 
         const variables = {
-          productId: productId,
+          handle: handle,
         };
 
-        const { product } = await fetchShopifyAPI(query, variables);
-        setProduct(product);
+        const { productByHandle } = await fetchShopifyAPI(query, variables);
+        console.log('Product Handle Data', productByHandle)
+        setProduct(productByHandle);
         setLoading(false);
       } catch (error) {
         setError(error.message);
@@ -52,8 +66,10 @@ function ProductDetailsPage({ productId }) {
       }
     }
 
-    fetchProductDetails();
-  }, [productId]);
+    if (handle) {
+      fetchProduct();
+    }
+  }, [handle]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -66,16 +82,17 @@ function ProductDetailsPage({ productId }) {
   if (!product) {
     return <div>No product found.</div>;
   }
-  console.log(['Single Product'], product)
+
 
   return (
     <div>
+      <h1>Vivek Viradia</h1>
       <h1>{product.title}</h1>
-      <p>{product.description}</p>
-      {/* <img src={product.images.edges[0].node.originalSrc} alt={product.images.edges[0].node.altText} />
-            <p>Price: {product.variants.edges[0].node.priceV2.amount}</p> */}
+      {/* <p>{product.description}</p>
+      <img src={product.images.edges[0].node.originalSrc} alt={product.images.edges[0].node.altText} />
+      <p>Price: {product.variants.edges[0].node.priceV2.amount}</p> */}
     </div>
   );
 }
 
-export default ProductDetailsPage;
+export default ProductPage;

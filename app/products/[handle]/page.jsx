@@ -453,22 +453,25 @@
 
 // pages/products/[productId].js
 
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import ProductDetailsPage from "@/components/ProductDetailsPage";
 import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 function ProductDetails() {
-  const router = useRouter();
-  console.log("router", router);
+  // const router = useRouter();
+  // const { query } = router.query;
+  // console.log("Query", query);
 
-  const query = router.query;
-  console.log("Query", query);
-  // const productHandle = query.productId;
-  // console.log(productHandle);
+  // const searchParams = useSearchParams();
+  // const productId = searchParams.get("productId");
+  // console.log("product handle", productId);
+  // console.log("searchParams", searchParams.productId);
 
   return (
     <div>
       <h1>Product Details</h1>
+      <ProductDetailsPage />
       {/* {productId && <ProductDetailsPage productId={productId} />} */}
     </div>
   );
