@@ -7,8 +7,6 @@ import { fetchShopifyAPI } from '@/shopify';
 import { useSearchParams } from 'next/navigation';
 
 function ProductPage() {
-  // const router = useRouter();
-  // const { handle } = router.query;
 
   const searchParams = useSearchParams();
   const productHandle = searchParams.get('productHandle')
@@ -41,6 +39,7 @@ function ProductPage() {
               variants(first: 1) {
                 edges {
                   node {
+                    id
                     price {
                       amount
                       currencyCode
@@ -83,14 +82,44 @@ function ProductPage() {
     return <div>No product found.</div>;
   }
 
-
+  console.log(product.description)
   return (
     <div>
       <h1>Vivek Viradia</h1>
       <h1>{product.title}</h1>
-      {/* <p>{product.description}</p>
-      <img src={product.images.edges[0].node.originalSrc} alt={product.images.edges[0].node.altText} />
-      <p>Price: {product.variants.edges[0].node.priceV2.amount}</p> */}
+      <div >
+        <div>
+          {
+            product.images.edges.map((img, index) => (
+              <img
+                key={index}
+                src={img.node.url}
+                alt={img.node.alttext}
+                width='200'
+                height='200'
+              />
+            ))
+          }
+          <div>
+            {
+              product.variants.edges.map((price, index) => (
+                <p key={index}>Price:{price.node.price.amount}</p>
+              ))
+            }
+          </div>
+          <div>
+            <h3>
+              Description:{product.description}
+            </h3>
+          </div>
+          <button
+            type="submit"
+            className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
+            Add to bag
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
