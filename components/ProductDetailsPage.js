@@ -11,8 +11,8 @@ function ProductPage() {
   // const { handle } = router.query;
 
   const searchParams = useSearchParams();
-  const handle = searchParams.get('productHandle')
-  console.log('productHandle', handle)
+  const productHandle = searchParams.get('productHandle')
+  console.log('productHandle', productHandle)
 
 
   const [product, setProduct] = useState(null);
@@ -24,8 +24,8 @@ function ProductPage() {
       try {
         const gql = String.raw;
         const query = gql`
-        query($handle: String!) {
-            productByHandle(handle: $handle) {
+        query($productHandle: String!) {
+            productByHandle(handle: $productHandle) {
               id
               title
               handle
@@ -33,7 +33,7 @@ function ProductPage() {
               images(first: 1) {
                 edges {
                   node {
-                    originalSrc
+                    url
                     altText
                   }
                 }
@@ -41,7 +41,7 @@ function ProductPage() {
               variants(first: 1) {
                 edges {
                   node {
-                    priceV2 {
+                    price {
                       amount
                       currencyCode
                     }
@@ -53,7 +53,7 @@ function ProductPage() {
         `;
 
         const variables = {
-          handle: handle,
+          productHandle: productHandle,
         };
 
         const { productByHandle } = await fetchShopifyAPI(query, variables);
@@ -66,10 +66,10 @@ function ProductPage() {
       }
     }
 
-    if (handle) {
+    if (productHandle) {
       fetchProduct();
     }
-  }, [handle]);
+  }, [productHandle]);
 
   if (loading) {
     return <div>Loading...</div>;
