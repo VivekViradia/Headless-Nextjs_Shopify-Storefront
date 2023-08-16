@@ -17,7 +17,7 @@ export async function fetchShopifyAPI(query, variables = {}) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Shopify-Storefront-Access-Token': '0bedf783cf155d3a5baa8c67fe741c39',
+                'X-Shopify-Storefront-Access-Token': '614cfb3168b5b9ae186388e295f1edf0',
             },
             body: JSON.stringify({
                 query,

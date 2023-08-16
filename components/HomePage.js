@@ -11,7 +11,6 @@ function HomePage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-
     useEffect(() => {
         async function fetchProducts() {
             try {
@@ -28,7 +27,7 @@ function HomePage() {
                         images(first: 1) {
                           edges {
                             node {
-                              originalSrc
+                              url
                               altText
                             }
                           }
@@ -36,7 +35,7 @@ function HomePage() {
                         variants(first: 1) {
                           edges {
                             node {
-                              priceV2 {
+                              price {
                                 amount
                                 currencyCode
                               }
@@ -121,7 +120,7 @@ function HomePage() {
                                                 (product.node.images.edges.map((img, index) => (
                                                     <img
                                                         key={index}
-                                                        src={img.node.originalSrc}
+                                                        src={img.node.url}
                                                         alt={img.node.altText}
                                                         className="h-full w-full object-cover object-center group-hover:opacity-75"
                                                     />
@@ -137,7 +136,7 @@ function HomePage() {
                                     <h3 className="mt-4 text-sm text-gray-700">{product.node.title}</h3>
                                     {
                                         product.node.variants.edges.map((edge, index) => (
-                                            <p key={index} className="mt-1 text-lg font-medium text-gray-900">{edge.node.priceV2.amount}</p>
+                                            <p key={index} className="mt-1 text-lg font-medium text-gray-900">{edge.node.price.amount}</p>
                                         ))
                                     }
 
@@ -153,4 +152,4 @@ function HomePage() {
     );
 }
 
-export default HomePage
+export default HomePage;
