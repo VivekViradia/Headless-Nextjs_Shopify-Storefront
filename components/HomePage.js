@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { fetchShopifyAPI } from '@/shopify';
+// import fetchShopifyAPI from "@/shopify";
 import NavBar from './NavBar';
 import Footer from './Footer';
 import Link from 'next/link';

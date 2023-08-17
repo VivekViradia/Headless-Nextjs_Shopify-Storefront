@@ -4,8 +4,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { fetchShopifyAPI } from '@/shopify';
+// import fetchShopifyAPI from "@/shopify";
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+
 const gql = String.raw;
 const query = gql`
 query($productHandle: String!) {
@@ -36,6 +37,7 @@ query($productHandle: String!) {
     }
   }
 `;
+
 const createCartMutation = gql`
   mutation cartCreate($input: CartInput) {
     cartCreate(input: $input) {
@@ -45,6 +47,7 @@ const createCartMutation = gql`
     }
   }
 `
+
 const updateCartMutation = gql`
   mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
     cartLinesAdd(cartId: $cartId, lines: $lines) {
@@ -55,26 +58,23 @@ const updateCartMutation = gql`
   }
 `
 
-function ProductPage() {
+const ProductPage = async () => {
 
   const searchParams = useSearchParams();
   const productHandle = searchParams.get('productHandle')
-  // console.log('productHandle', productHandle)
   const router = useRouter();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1)
-  const [cartID, setCartID] = useState('')
 
   useEffect(() => {
     async function fetchProduct() {
       try {
-
         const variables = {
           productHandle: productHandle,
         };
-
+        console.log("variables", variables)
         const { productByHandle } = await fetchShopifyAPI(query, variables);
         console.log('Product Handle Data', productByHandle)
         setProduct(productByHandle);
@@ -89,13 +89,6 @@ function ProductPage() {
       fetchProduct();
     }
   }, [productHandle]);
-
-
-  // const cartNumber = cartID.slice(19,)
-  // console.log("cartID Number", cartNumber)
-  // useEffect(() => {
-  //   cartNumber
-  // }, [cartNumber])
 
   if (loading) {
     return <div>Loading...</div>;
@@ -118,8 +111,6 @@ function ProductPage() {
 
   const handleAddToCart = async () => {
     let cartId = sessionStorage.getItem('cartId')
-    setCartID(cartId)
-    // console.log("session cart id outside if", cartId)
     if (cartId) {
       const variables = {
         cartId,
@@ -128,7 +119,6 @@ function ProductPage() {
       const data = await fetchShopifyAPI(updateCartMutation, variables)
       cartId = data.cartLinesAdd.cart.id
       sessionStorage.setItem('cartId', cartId)
-      // console.log("if data", cartId)
     } else {
       const variables = {
         input: {
@@ -136,25 +126,13 @@ function ProductPage() {
         },
       }
       const data = await fetchShopifyAPI(createCartMutation, variables)
-      // console.log("else_1 data", cartID)
-      // setCartID(data)
-      // console.log("else data", cartID)
       cartId = data.cartCreate.cart.id
       sessionStorage.setItem('cartId', cartId)
     }
     console.log("cartId", cartId)
     const cartNumber = cartId.slice(19,)
     router.push(`/cart?cartNumber=${cartNumber}`)
-    // router.push({
-    //   pathname: `/cart/[cartNumber]`,
-    //   query: { cartNumber: cartNumber }
-    // })
   }
-
-
-  // console.log("cartID", cartID.slice(19,))
-  // console.log("cartID type", typeof cartID)
-  // console.log(product.description)
 
   return (
     <div>
@@ -201,12 +179,6 @@ function ProductPage() {
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
           />
-          {/* <Link
-            href={{
-              pathname: `/cart`,
-              query: { cartNumber: cartNumber },
-            }}
-          > */}
           <div>
             <button
               onClick={handleAddToCart}
@@ -216,9 +188,6 @@ function ProductPage() {
               Add to bag
             </button>
           </div>
-          {/* </Link> */}
-
-
         </div>
       </div>
     </div>

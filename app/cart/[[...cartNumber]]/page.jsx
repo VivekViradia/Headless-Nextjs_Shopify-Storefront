@@ -13,14 +13,12 @@ const CartPage = () => {
   const searchParams = useSearchParams();
 
   const id = searchParams.get("cartNumber");
-  console.log("Cart ID", id);
+  const cartID = "gid://shopify/Cart/" + id;
+  // console.log("Cart ID", "gid://shopify/Cart/" + id);
+  // console.log("Cart ID mutation", cartID);
   return (
     <div>
-      <div>
-        <h3>Cart Page</h3>
-        <Cart />
-      </div>
-      <div>{/* <h2>value :{value}</h2> */}</div>
+      <Cart cartID={cartID} />
     </div>
   );
 };
