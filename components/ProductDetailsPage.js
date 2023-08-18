@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { fetchShopifyAPI } from '@/shopify';
 // import fetchShopifyAPI from "@/shopify";
 import { useSearchParams } from 'next/navigation';
+import { useAppContext } from '@/lib/AppContext';
 
 const gql = String.raw;
 const query = gql`
@@ -67,6 +68,7 @@ const ProductPage = async () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1)
+  const { state, setState } = useAppContext()
 
   useEffect(() => {
     async function fetchProduct() {
@@ -78,6 +80,7 @@ const ProductPage = async () => {
         const { productByHandle } = await fetchShopifyAPI(query, variables);
         console.log('Product Handle Data', productByHandle)
         setProduct(productByHandle);
+        setState(productByHandle)
         setLoading(false);
       } catch (error) {
         setError(error.message);
@@ -133,6 +136,8 @@ const ProductPage = async () => {
     const cartNumber = cartId.slice(19,)
     router.push(`/cart?cartNumber=${cartNumber}`)
   }
+
+  console.log("Product Page---", state)
 
   return (
     <div>

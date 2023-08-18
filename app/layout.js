@@ -1,5 +1,6 @@
 
 import './globals.css'
+import { AppProvider } from '@/lib/AppContext'
 
 export const metadata = {
   title: 'Custom-StoreFront',
@@ -11,7 +12,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className='relative'>
 
-        {children}</body>
+        <AppProvider>{children}</AppProvider>
+      </body>
     </html>
   )
 }

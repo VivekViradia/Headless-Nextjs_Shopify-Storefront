@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { fetchShopifyAPI } from "@/shopify";
 // import fetchShopifyAPI from "@/shopify";
+import { useAppContext } from "@/lib/AppContext";
 
 const gql = String.raw;
 const getCartQuery = gql`
@@ -61,6 +62,7 @@ const removeItemMutation = gql`
 const Cart = ({ cartID }) => {
   console.log("Cart Component", cartID);
   const [cart, setCart] = useState();
+  const { state, setState } = useAppContext();
 
   useEffect(() => {
     async function fetchCartProducts() {
@@ -71,6 +73,7 @@ const Cart = ({ cartID }) => {
         console.log("variables", variables);
         const cartData = await fetchShopifyAPI(getCartQuery, variables);
         setCart(cartData.cart);
+        // setState(cartData.cart);
         console.log("Cart Product cartData", cartData);
       } catch (error) {
         console.log("Error in Data Fetching", error);
@@ -90,6 +93,7 @@ const Cart = ({ cartID }) => {
     await fetchShopifyAPI(removeItemMutation, variables);
   };
   console.log("cart", cart);
+  console.log("state", state);
   return (
     <div>
       <h1 className='text-xl'>Cart</h1>
